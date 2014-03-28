@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings>
+	<setting name="setting1" class="com1">
+		<response name="res1.1">test1.1</response>
+		<response name="res1.2">test1.2</response>
+	</setting>
+	<setting name="setting2" class="com2">
+		<response name="res2.1">test2.1</response>
+		<response name="res2.2">test2.2</response>
+	</setting>
+</settings>
