@@ -1,24 +1,18 @@
 package com.mvc.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Setting {
 
-	private List<Response> responseList=new ArrayList<Response>();
-	
 	private String name;
 	
 	private String classPath;
 
-	public List<Response> getResponseList() {
-		return responseList;
-	}
-
-	public void setResponseList(List<Response> responseList) {
-		this.responseList = responseList;
-	}
-
+	private Map<String, Response> responseMap=new HashMap<String, Response>();
+	
 	public String getName() {
 		return name;
 	}
@@ -35,10 +29,19 @@ public class Setting {
 		this.classPath = classPath;
 	}
 
+	public Map<String, Response> getResponseMap() {
+		return responseMap;
+	}
+
+	public void setResponseMap(Map<String, Response> responseMap) {
+		this.responseMap = responseMap;
+	}
+
 	@Override
 	public String toString() {
-		return "Setting [responseList=" + responseList + ", name=" + name
-				+ ", classPath=" + classPath + "]";
+		return "Setting [name=" + name + ", classPath=" + classPath
+				+ ", responseMap=" + responseMap + "]";
 	}
+
 
 }

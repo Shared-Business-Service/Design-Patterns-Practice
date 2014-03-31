@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -76,6 +77,11 @@ public class XMLParser {
 			xmlString = xmlString.substring(index + 2);
 		}
 		return xmlString;
+	}
+
+	public XMLParser() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
 
 	public XMLParser(XMLParserStrategy strategy) {
@@ -164,13 +170,6 @@ public class XMLParser {
 		return tag;
 	}
 
-	public void parseXML(String pathname) throws IOException,
-			XMLParserException {
-		String xmlString = parseXMLHead(pathname);
-		parseXMLBody(xmlString);
-//		System.out.println(xmlString);
-	}
-
 	public String readFileAsString(String pathname) throws IOException {
 		return readFileAsString(pathname, "UTF-8");
 	}
@@ -186,6 +185,17 @@ public class XMLParser {
 			stringBuffer.append(line);
 		}
 		return stringBuffer.toString();
+	}
+	
+	public void parseXML(String pathname) throws IOException,
+		XMLParserException {
+		String xmlString = parseXMLHead(pathname);
+		parseXMLBody(xmlString);
+		//System.out.println(xmlString);
+	}
+	
+	public String execute(String param1,String param2,Integer param3){
+		return "success";
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -230,5 +240,14 @@ public class XMLParser {
 		// for(String s:strings){
 		// System.out.println(s);
 		// }
+		try {
+			Class settingClass=Class.forName("com.mvc.util.XMLParser");
+			Object object=settingClass.newInstance();
+			Method method=settingClass.getDeclaredMethod("execute");
+			Object returnValue=method.invoke(object);
+			System.out.println(returnValue);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 }

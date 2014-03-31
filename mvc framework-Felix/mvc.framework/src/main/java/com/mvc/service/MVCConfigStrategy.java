@@ -33,11 +33,11 @@ public class MVCConfigStrategy implements XMLParserStrategy {
 			setting.setClassPath(attrMap.get("class"));
 			config.getSettings().getSettingList().add(setting);
 		}else if("response".equals(tagName)){
-			Response response=new Response();
-			Map<String, String> attrMap=tag.getTagAttrMap();
-			response.setName(attrMap.get("name"));
-			List<Setting> settingList=config.getSettings().getSettingList();
-			settingList.get(settingList.size()-1).getResponseList().add(response);
+//			Response response=new Response();
+//			Map<String, String> attrMap=tag.getTagAttrMap();
+//			response.setName(attrMap.get("name"));
+//			List<Setting> settingList=config.getSettings().getSettingList();
+//			settingList.get(settingList.size()-1).getResponseList().add(response);
 		}
 
 	}
@@ -58,11 +58,13 @@ public class MVCConfigStrategy implements XMLParserStrategy {
 	public void elementContent(Tag tag) {
 		String tagName=tag.getTagName();
 		System.out.println("--------"+tag.getTagContent()+"--------");
+		System.out.println("tag.getTagAttrMap().get(\"name\"): "+tag.getTagAttrMap().get("name"));
 		if("response".equals(tagName)){
 			List<Setting> settingList=config.getSettings().getSettingList();
-			List<Response> responseList=settingList.get(settingList.size()-1).getResponseList();
-			Response response=responseList.get(responseList.size()-1);
+			Map<String, Response> responseMap=settingList.get(settingList.size()-1).getResponseMap();
+			Response response=new Response();
 			response.setContent(tag.getTagContent());
+			responseMap.put(tag.getTagAttrMap().get("name"), response);
 		}
 
 	}
