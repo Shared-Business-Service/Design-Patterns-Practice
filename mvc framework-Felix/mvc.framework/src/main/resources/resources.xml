@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <settings>
 	<setting name="setting1" class="com1">
+		<interceptor name="interceptor"></interceptor>
 		<response name="res1.1">test1.1</response>
 		<response name="res1.2">test1.2</response>
 	</setting>

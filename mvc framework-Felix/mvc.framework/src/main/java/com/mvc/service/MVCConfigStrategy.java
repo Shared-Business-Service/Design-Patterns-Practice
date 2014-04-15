@@ -16,6 +16,7 @@ public class MVCConfigStrategy implements XMLParserStrategy {
 	
 	@Override
 	public void startDocument(Tag tag) {
+//		System.out.println("startDocument");
 		config=new MVCConfig();
 
 	}
@@ -38,13 +39,17 @@ public class MVCConfigStrategy implements XMLParserStrategy {
 //			response.setName(attrMap.get("name"));
 //			List<Setting> settingList=config.getSettings().getSettingList();
 //			settingList.get(settingList.size()-1).getResponseList().add(response);
+		}else if("interceptor".equals(tagName)){
+			Map<String, String> attrMap=tag.getTagAttrMap();
+			List<Setting> settingList=config.getSettings().getSettingList();
+			settingList.get(settingList.size()-1).getInterceptors().add(attrMap.get("name"));
 		}
 
 	}
 
 	@Override
 	public void endDocument(Tag tag) {
-		// TODO Auto-generated method stub
+//		System.out.println("endDocument");
 
 	}
 
@@ -57,8 +62,8 @@ public class MVCConfigStrategy implements XMLParserStrategy {
 	@Override
 	public void elementContent(Tag tag) {
 		String tagName=tag.getTagName();
-		System.out.println("--------"+tag.getTagContent()+"--------");
-		System.out.println("tag.getTagAttrMap().get(\"name\"): "+tag.getTagAttrMap().get("name"));
+//		System.out.println("--------"+tag.getTagContent()+"--------");
+//		System.out.println("tag.getTagAttrMap().get(\"name\"): "+tag.getTagAttrMap().get("name"));
 		if("response".equals(tagName)){
 			List<Setting> settingList=config.getSettings().getSettingList();
 			Map<String, Response> responseMap=settingList.get(settingList.size()-1).getResponseMap();

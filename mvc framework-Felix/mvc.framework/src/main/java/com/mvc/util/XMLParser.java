@@ -42,7 +42,7 @@ public class XMLParser {
 			IOException {
 		String xmlString = readFileAsString(pathname).trim();
 		xmlString = trimBlank(xmlString);
-		System.out.println(xmlString);
+//		System.out.println(xmlString);
 		if (xmlString.startsWith("<?")) {
 			int index = xmlString.indexOf("?>");
 			if (index == -1) {
@@ -96,7 +96,7 @@ public class XMLParser {
 
 	private void parseXMLBody(String xmlString) {
 		xmlString = trimBlank(xmlString);
-		System.out.println(xmlString);
+//		System.out.println(xmlString);
 		int length = xmlString.length();
 		boolean startDocumentFlag = true;
 		boolean startElementFlag=false;
