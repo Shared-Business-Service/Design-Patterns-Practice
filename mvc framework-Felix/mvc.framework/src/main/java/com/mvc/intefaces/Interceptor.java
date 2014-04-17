@@ -7,7 +7,7 @@ import com.mvc.service.Invoke;
 
 public interface Interceptor {
 	
-	public String invoke(Invoke invoke, HttpServletRequest request, HttpServletResponse response )throws Exception;
+	public String invoke(Interceptor invoke, HttpServletRequest request, HttpServletResponse response )throws Exception;
 	
 }
 

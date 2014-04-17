@@ -9,7 +9,7 @@ import com.mvc.service.Invoke;
 public class TestForInterceptor implements Interceptor {
 
 	@Override
-	public String invoke(Invoke invoke, HttpServletRequest request,
+	public String invoke(Interceptor invoke, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		System.out.println("TestForInterceptor: before invoke");
 		String result=invoke.invoke(invoke, request, response);

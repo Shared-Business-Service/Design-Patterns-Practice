@@ -10,6 +10,6 @@
 <body>
 	<h1>SUCCESS</h1> 
 	<h2>Welcome </h2>
-<%-- 	<%=((LoginAction)request.getAttribute("action")).getUsername() %> --%>
+<%-- 	<%=((LoginAction)request.getAttribute("LoginAction")).getUsername() %> --%>
 </body>
 </html>

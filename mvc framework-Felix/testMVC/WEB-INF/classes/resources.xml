@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings>
+	<setting name="login" class="test.mvc.LoginAction">
+		<interceptor name="test.interceptor.TestForInterceptor"></interceptor>
+		<response name="success">/jsp/success.jsp</response>
+	</setting>
+</settings>

@@ -1,6 +1,8 @@
 package test.mvc;
 
-public class LoginAction {
+import com.mvc.intefaces.Action;
+
+public class LoginAction implements Action{
 
 	private String username;
 	

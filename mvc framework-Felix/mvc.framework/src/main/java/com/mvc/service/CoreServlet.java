@@ -15,8 +15,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.mvc.intefaces.Action;
 import com.mvc.intefaces.Interceptor;
 import com.mvc.intefaces.TransferType;
+import com.mvc.intefaces.XMLParser;
+import com.mvc.interceptor.InterceptorProxy;
 import com.mvc.interceptor.ParameterConvertInterceptor;
 import com.mvc.model.MVCConfig;
 import com.mvc.model.Response;
@@ -31,7 +34,10 @@ import com.mvc.transferImpl.IntegerTransterImpl;
 import com.mvc.transferImpl.LongTransferImpl;
 import com.mvc.transferImpl.ShortTransferImpl;
 import com.mvc.transferImpl.StringTransferImpl;
-import com.mvc.util.XMLParser;
+import com.mvc.util.XMLParserBasic;
+import com.mvc.util.XMLParserByOrder;
+import com.mvc.util.XMLParserByOrder2;
+import com.mvc.util.XMLParserByOrder2ForMVCConfig;
 
 public class CoreServlet extends HttpServlet{
 
@@ -51,7 +57,6 @@ public class CoreServlet extends HttpServlet{
 		String actionString=uri.substring(index+1);
 		System.out.println(actionString);
 		String[] actions=actionString.split("\\.");
-//		System.out.println(actions.length);
 		String reqAction=actions[0];
 		
 		//parse xml document
@@ -68,26 +73,31 @@ public class CoreServlet extends HttpServlet{
 					String classPath=setting.getClassPath();
 					try {
 						Class actionClass=Class.forName(classPath);
-						Object object=actionClass.newInstance();
+						Action action=(Action)actionClass.newInstance();
 						req.setAttribute("actionClass", actionClass);
-						req.setAttribute("actionObject", object);
+						req.setAttribute("actionObject", action);
 						//prepare parems
 //						prepareParameters(req, actionClass, object);
 						
-//						Method method=actionClass.getDeclaredMethod("execute");
-//						String returnValue=(String)method.invoke(object);
 						List<Interceptor> interceptors=new ArrayList<Interceptor>();
 						interceptors.add(new ParameterConvertInterceptor());
 						rigUpInterceptor(interceptors,setting.getInterceptors());
-						Invoke invoke=new Invoke(interceptors);
-						String returnValue=invoke.invoke(invoke, req, resp);
+						String returnValue=null;
+						//dynamic proxy
+						InterceptorProxy proxy=new InterceptorProxy(interceptors, req, resp);
+						action=(Action) proxy.proxy(action);
+//						Method method=actionClass.getDeclaredMethod("execute");
+						returnValue=action.execute();
+						//recursion
+//						Invoke invoke=new Invoke(interceptors);
+//						String returnValue=invoke.invoke(invoke, req, resp);
 						System.out.println("-------CoreServlet returnValue------------ "+returnValue);
 						Map<String, Response> responseMap=setting.getResponseMap();
 						Response response=responseMap.get(returnValue);
 						System.out.println("responseMap.get(returnValue): "+response);
 						if(response!=null&&response.getContent()!=null){
-							System.out.println("Dispatcher: "+response.getContent());
-							req.setAttribute(actionClass.getSimpleName(), object);
+							System.out.println("Dispatcher: "+response.getContent()+" | actionClass.getSimpleName():"+actionClass.getSimpleName());
+							req.setAttribute(actionClass.getSimpleName(), action);
 							req.getRequestDispatcher(response.getContent()).forward(req, resp);
 						}
 					} catch (Exception e) {
@@ -107,13 +117,19 @@ public class CoreServlet extends HttpServlet{
 	}
 	
 	private MVCConfig prepareMvcConfig(){
-		MVCConfigStrategy strategy=new MVCConfigStrategy();
-		XMLParser parser=new XMLParser(strategy);
-		String projectPath = parser.getClass().getResource("/").getPath();
+		//bridge
+//		MVCConfigStrategy strategy=new MVCConfigStrategy();
+//		XMLParser parser=new XMLParserByOrder(strategy);
+		
+		//template
+		XMLParserBasic parser2=new XMLParserByOrder2ForMVCConfig();
+		
+		String projectPath = parser2.getClass().getResource("/").getPath();
 		MVCConfig config=null;
 		try {
-			parser.parseXML(projectPath + "resources.xml");
-			config=strategy.getConfig();
+//			parser.parseXML(projectPath + "resources.xml");
+//			config=strategy.getConfig();
+			config=(MVCConfig) parser2.parseXML(projectPath + "resources.xml");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -123,43 +139,43 @@ public class CoreServlet extends HttpServlet{
 	
 	
 	public void destroy() {
-		// TODO Auto-generated method stub
 		super.destroy();
 	}
 
 	public void init() throws ServletException {
-		// TODO Auto-generated method stub
 		super.init();
 	}
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		super.doGet(req, resp);
 	}
 
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		super.doPost(req, resp);
 	}
 
 	public static void main(String[] args) throws Exception {
 		MVCConfigStrategy strategy=new MVCConfigStrategy();
-		XMLParser parser=new XMLParser(strategy);
+		XMLParserByOrder parser=new XMLParserByOrder(strategy);
 		String projectPath = parser.getClass().getResource("/").getPath();
 		MVCConfig config=null;
-		try {
-			parser.parseXML(projectPath + "resources.xml");
-			config=strategy.getConfig();
-			System.out.println(config);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		String string="login.action";
-		String[] actions=string.split("\\.");
-		System.out.println(actions.length);
+//		try {
+//			parser.parseXML(projectPath + "resources.xml");
+//			config=strategy.getConfig();
+//			System.out.println(config);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		String string="login.action";
+//		String[] actions=string.split("\\.");
+//		System.out.println(actions.length);
 //		Class clazz=Class.forName("com.mvc.service.CoreServlet");
 //		System.out.println(clazz.getSimpleName());
+		XMLParserBasic<MVCConfig> parser2=new XMLParserByOrder2ForMVCConfig();
+		projectPath = parser2.getClass().getResource("/").getPath();
+		config=parser2.parseXML(projectPath + "resources.xml");
+		System.out.println(config);
 	}
 }

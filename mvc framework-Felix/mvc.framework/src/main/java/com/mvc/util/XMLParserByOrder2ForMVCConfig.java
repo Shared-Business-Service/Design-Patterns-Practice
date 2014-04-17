@@ -1,24 +1,18 @@
-package com.mvc.service;
+package com.mvc.util;
 
 import java.util.List;
 import java.util.Map;
 
-import com.mvc.interceptor.XMLParserStrategy;
 import com.mvc.model.MVCConfig;
 import com.mvc.model.Response;
 import com.mvc.model.Setting;
 import com.mvc.model.Settings;
 import com.mvc.model.Tag;
 
-public class MVCConfigStrategy implements XMLParserStrategy {
-
-	private MVCConfig config;
+public class XMLParserByOrder2ForMVCConfig extends XMLParserByOrder2<MVCConfig>{
 	
-	@Override
 	public void startDocument(Tag tag) {
-//		System.out.println("startDocument");
 		config=new MVCConfig();
-
 	}
 
 	@Override
@@ -34,11 +28,7 @@ public class MVCConfigStrategy implements XMLParserStrategy {
 			setting.setClassPath(attrMap.get("class"));
 			config.getSettings().getSettingList().add(setting);
 		}else if("response".equals(tagName)){
-//			Response response=new Response();
-//			Map<String, String> attrMap=tag.getTagAttrMap();
-//			response.setName(attrMap.get("name"));
-//			List<Setting> settingList=config.getSettings().getSettingList();
-//			settingList.get(settingList.size()-1).getResponseList().add(response);
+
 		}else if("interceptor".equals(tagName)){
 			Map<String, String> attrMap=tag.getTagAttrMap();
 			List<Setting> settingList=config.getSettings().getSettingList();
@@ -49,21 +39,17 @@ public class MVCConfigStrategy implements XMLParserStrategy {
 
 	@Override
 	public void endDocument(Tag tag) {
-//		System.out.println("endDocument");
 
 	}
 
 	@Override
 	public void endElement(Tag tag) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void elementContent(Tag tag) {
 		String tagName=tag.getTagName();
-//		System.out.println("--------"+tag.getTagContent()+"--------");
-//		System.out.println("tag.getTagAttrMap().get(\"name\"): "+tag.getTagAttrMap().get("name"));
 		if("response".equals(tagName)){
 			List<Setting> settingList=config.getSettings().getSettingList();
 			Map<String, Response> responseMap=settingList.get(settingList.size()-1).getResponseMap();
@@ -72,14 +58,6 @@ public class MVCConfigStrategy implements XMLParserStrategy {
 			responseMap.put(tag.getTagAttrMap().get("name"), response);
 		}
 
-	}
-
-	public MVCConfig getConfig() {
-		return config;
-	}
-
-	public void setConfig(MVCConfig config) {
-		this.config = config;
 	}
 
 }

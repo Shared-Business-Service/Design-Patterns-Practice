@@ -21,7 +21,7 @@ public class Invoke implements Interceptor {
 		this.interceptors = interceptors;
 	}
 
-	public String invoke(Invoke invoke, HttpServletRequest request,
+	public String invoke(Interceptor invoke, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		String result=null;
 		if (index == interceptors.size()) {

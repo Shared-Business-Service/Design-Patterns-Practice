@@ -15,7 +15,7 @@ import com.mvc.service.TransferTypeManager;
 public class ParameterConvertInterceptor implements Interceptor{
 
 	@Override
-	public String invoke(Invoke invoke, HttpServletRequest request,
+	public String invoke(Interceptor invoke, HttpServletRequest request,
 			HttpServletResponse response) throws Exception{
 		Class actionClass = (Class) request.getAttribute("actionClass");
 		Object object = request.getAttribute("actionObject");
