@@ -1,5 +1,7 @@
 package test.mvc;
 
+import javax.servlet.http.HttpSession;
+
 import com.mvc.intefaces.Action;
 
 public class LoginAction implements Action{
@@ -12,7 +14,13 @@ public class LoginAction implements Action{
 		System.out.println("---------LoginAction---------");
 		System.out.println("username: "+username);
 		System.out.println("password: "+password);
-		return "success";
+		String result=null;
+		if("felix".equals(username)&&"123".equals(password)){
+			result="success";
+		}else {
+			result="failed";
+		}
+		return result;
 	}
 
 	public String getUsername() {

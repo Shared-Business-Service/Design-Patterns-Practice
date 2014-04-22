@@ -34,10 +34,12 @@ import com.mvc.transferImpl.IntegerTransterImpl;
 import com.mvc.transferImpl.LongTransferImpl;
 import com.mvc.transferImpl.ShortTransferImpl;
 import com.mvc.transferImpl.StringTransferImpl;
+import com.mvc.util.Utils;
 import com.mvc.util.XMLParserBasic;
 import com.mvc.util.XMLParserByOrder;
 import com.mvc.util.XMLParserByOrder2;
 import com.mvc.util.XMLParserByOrder2ForMVCConfig;
+import com.mvc.util.XMLParserFactory;
 
 public class CoreServlet extends HttpServlet{
 
@@ -121,8 +123,19 @@ public class CoreServlet extends HttpServlet{
 //		MVCConfigStrategy strategy=new MVCConfigStrategy();
 //		XMLParser parser=new XMLParserByOrder(strategy);
 		
+		XMLParserFactory factory=null;
+		try {
+			String factoryPath=Utils.getConfig().getProperty("XMLParserFactory");
+			System.out.println("factoryPath==null: "+(factoryPath==null));
+			if(factoryPath==null){
+				factoryPath="com.mvc.util.XMLParserFactoryForMVCConfig";
+			}
+			factory = (XMLParserFactory) Class.forName(factoryPath).newInstance();
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		} 
 		//template
-		XMLParserBasic parser2=new XMLParserByOrder2ForMVCConfig();
+		XMLParserBasic parser2=factory.createXMLParserBasic();
 		
 		String projectPath = parser2.getClass().getResource("/").getPath();
 		MVCConfig config=null;
